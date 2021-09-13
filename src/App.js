@@ -30,14 +30,14 @@ export default function App() {
               {bugItem.description}
               <button
                 onClick={() => {
-                  dispatch(bugRemoved(bugItem.id));
+                  dispatch(bugRemoved({ id: bugItem.id }));
                 }}
               >
                 X
               </button>
               <button
                 onClick={() => {
-                  dispatch(bugResolved(bugItem.id));
+                  dispatch(bugResolved({ id: bugItem.id }));
                 }}
               >
                 Alright

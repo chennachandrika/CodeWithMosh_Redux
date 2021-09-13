@@ -22,6 +22,7 @@ const slice = createSlice({
     },
     bugRemoved: (bugs, action) => {
       bugs = bugs.filter((bug) => bug.id !== action.payload.id);
+      return bugs;
     }
   }
 });
