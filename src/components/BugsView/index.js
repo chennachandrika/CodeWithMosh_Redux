@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { bugAdded, bugRemoved, bugResolved } from "../../store/bugs";
+import * as actions from "../../store/api";
 
 function BugsView() {
   const bugsList = useSelector((store) => store.entities.bugs);
@@ -9,11 +10,11 @@ function BugsView() {
     event.preventDefault();
     dispatch(bugAdded({ description: inputValue }));
     const dataTodos = dispatch({
-      type: "apiCalled",
+      type: actions.apiCallBegan.type,
       payload: {
         url: "https://jsonplaceholder.typicode.com/todos/",
-        onSuccess: "onTodosReceived",
-        onFailure: "onTodosRejected"
+        onSuccess: actions.apiCallSuccess.type,
+        onFailure: actions.apiCallFailure.type
       }
     });
     console.log(dataTodos);
