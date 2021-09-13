@@ -4,13 +4,16 @@ import { createSelector } from "reselect";
 let lastId = 0;
 
 const slice = createSlice({
-  name: "Bugs",
+  name: "bugs",
   initialState: {
     list: [],
     loading: false,
     lastFetch: null
   },
   reducers: {
+    bugsReceived: (bugs, action) => {
+      bugs.list = action.payload;
+    },
     bugAdded: (bugs, action) => {
       bugs.list.push({
         id: ++lastId,
