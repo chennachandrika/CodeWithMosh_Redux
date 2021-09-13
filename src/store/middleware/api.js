@@ -11,7 +11,7 @@ const api = ({ dispatch }) => (next) => async (action) => {
     if (respond.ok) {
       const data = await respond.json();
       dispatch(actions.apiCallSuccess(data));
-      if (onSuccess) dispatch({ type: onSuccess, payload: data });
+      // if (onSuccess) dispatch({ type: onSuccess, payload: data });
     }
   } catch (error) {
     dispatch(actions.apiCallSuccess(error));

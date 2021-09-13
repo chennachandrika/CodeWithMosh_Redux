@@ -5,23 +5,27 @@ let lastId = 0;
 
 const slice = createSlice({
   name: "Bugs",
-  initialState: [],
+  initialState: {
+    list: [],
+    loading: false,
+    lastFetch: null
+  },
   reducers: {
     bugAdded: (bugs, action) => {
-      bugs.push({
+      bugs.list.push({
         id: ++lastId,
         description: action.payload.description,
         resolved: false
       });
     },
     bugResolved: (bugs, action) => {
-      const findBugIndex = bugs.findIndex(
+      const findBugIndex = bugs.list.findIndex(
         (bug) => bug.id === action.payload.id
       );
-      bugs[findBugIndex].resolved = true;
+      bugs.list[findBugIndex].resolved = true;
     },
     bugRemoved: (bugs, action) => {
-      bugs = bugs.filter((bug) => bug.id !== action.payload.id);
+      bugs.list = bugs.list.filter((bug) => bug.id !== action.payload.id);
       return bugs;
     }
   }

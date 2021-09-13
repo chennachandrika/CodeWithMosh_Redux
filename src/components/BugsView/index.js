@@ -3,7 +3,7 @@ import { bugAdded, bugRemoved, bugResolved } from "../../store/bugs";
 import * as actions from "../../store/api";
 
 function BugsView() {
-  const bugsList = useSelector((store) => store.entities.bugs);
+  const bugsList = useSelector((store) => store.entities.bugs.list);
   const dispatch = useDispatch();
   let inputValue = null;
   const onAddBug = (event) => {
