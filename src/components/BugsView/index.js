@@ -8,6 +8,15 @@ function BugsView() {
   const onAddBug = (event) => {
     event.preventDefault();
     dispatch(bugAdded({ description: inputValue }));
+    const dataTodos = dispatch({
+      type: "apiCalled",
+      payload: {
+        url: "https://jsonplaceholder.typicode.com/todos/",
+        onSuccess: "onTodosReceived",
+        onFailure: "onTodosRejected"
+      }
+    });
+    console.log(dataTodos);
   };
   const renderApp = () => {
     return (
@@ -17,7 +26,6 @@ function BugsView() {
           <input
             onChange={(e) => {
               inputValue = e.target.value;
-              console.log(inputValue);
             }}
           />
           <button type="submit">Submit</button>
