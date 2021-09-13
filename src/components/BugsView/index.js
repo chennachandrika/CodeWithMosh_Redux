@@ -9,15 +9,13 @@ function BugsView() {
   const onAddBug = (event) => {
     event.preventDefault();
     dispatch(bugAdded({ description: inputValue }));
-    const dataTodos = dispatch({
-      type: actions.apiCallBegan.type,
-      payload: {
+    dispatch(
+      actions.apiCallBegan({
         url: "https://jsonplaceholder.typicode.com/todos/",
         onSuccess: actions.apiCallSuccess.type,
         onFailure: actions.apiCallFailure.type
-      }
-    });
-    console.log(dataTodos);
+      })
+    );
   };
   const renderApp = () => {
     return (
