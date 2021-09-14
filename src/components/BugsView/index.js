@@ -4,11 +4,12 @@ import { loadBugs } from "../../store/bugs";
 
 function BugsView() {
   const bugsList = useSelector((store) => store.entities.bugs.list);
+  const isLoading = useSelector((store) => store.entities.bugs.loading);
   const dispatch = useDispatch();
   let inputValue = null;
   const onAddBug = (event) => {
     event.preventDefault();
-    dispatch(bugAdded({ description: inputValue }));
+    dispatch(bugAdded({ title: inputValue }));
     dispatch(loadBugs());
   };
   const renderApp = () => {
@@ -26,7 +27,7 @@ function BugsView() {
         <ul>
           {bugsList.map((bugItem) => (
             <li key={bugItem.id}>
-              {bugItem.description}
+              {bugItem.title}
               <button
                 onClick={() => {
                   dispatch(bugRemoved({ id: bugItem.id }));
@@ -44,6 +45,7 @@ function BugsView() {
             </li>
           ))}
         </ul>
+        {isLoading && "Loading..."}
       </div>
     );
   };

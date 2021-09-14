@@ -16,21 +16,21 @@ const slice = createSlice({
       bugs.loading = true;
     },
     bugsReceived: (bugs, action) => {
-      bugs.list = action.payload;
+      bugs.list = action.payload.data;
       bugs.loading = false;
     },
     bugAdded: (bugs, action) => {
       bugs.list.push({
         id: ++lastId,
-        description: action.payload.description,
-        resolved: false
+        title: action.payload.title,
+        completed: false
       });
     },
     bugResolved: (bugs, action) => {
       const findBugIndex = bugs.list.findIndex(
         (bug) => bug.id === action.payload.id
       );
-      bugs.list[findBugIndex].resolved = true;
+      bugs.list[findBugIndex].completed = true;
     },
     bugRemoved: (bugs, action) => {
       bugs.list = bugs.list.filter((bug) => bug.id !== action.payload.id);
@@ -52,6 +52,8 @@ export default slice.reducer;
 export const loadBugs = () =>
   actions.apiCallBegan({
     url: "https://jsonplaceholder.typicode.com/todos/",
+    onStart: bugsRequested.type,
+    data: bugsReceived.type,
     onSuccess: actions.apiCallSuccess.type,
     onFailure: actions.apiCallFailure.type
   });
