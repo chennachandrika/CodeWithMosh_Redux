@@ -11,6 +11,9 @@ function BugsView() {
     event.preventDefault();
     dispatch(bugAdded({ title: inputValue }));
     dispatch(loadBugs());
+    setTimeout(() => {
+      dispatch(loadBugs());
+    }, 5000);
   };
   const renderApp = () => {
     return (

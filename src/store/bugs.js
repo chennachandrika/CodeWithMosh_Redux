@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import * as actions from "../store/api";
+import momment from "moment";
 
 let lastId = 0;
 
@@ -17,6 +18,10 @@ const slice = createSlice({
     },
     bugsReceived: (bugs, action) => {
       bugs.list = action.payload.data;
+      bugs.loading = false;
+      bugs.lastFetch = Date.now();
+    },
+    bugsFailed: (bugs, action) => {
       bugs.loading = false;
     },
     bugAdded: (bugs, action) => {
@@ -44,19 +49,39 @@ export const {
   bugRemoved,
   bugResolved,
   bugsRequested,
-  bugsReceived
+  bugsReceived,
+  bugsFailed
 } = slice.actions;
 export default slice.reducer;
 
+//use thunk for not repetation of fetch
+export const loadBugs = () => (dispatch, getState) => {
+  const { lastFetch } = getState().entities.bugs;
+  const minDiff = momment().diff(momment(lastFetch), "minutes");
+  if (minDiff < 10) return;
+
+  dispatch(
+    actions.apiCallBegan({
+      url: "https://jsonplaceholder.typicode.com/todos/",
+      onStart: bugsRequested.type,
+      onError: bugsFailed.type,
+      data: bugsReceived.type,
+      onSuccess: actions.apiCallSuccess.type,
+      onFailure: actions.apiCallFailure.type
+    })
+  );
+};
+
 //actionCreator
-export const loadBugs = () =>
-  actions.apiCallBegan({
-    url: "https://jsonplaceholder.typicode.com/todos/",
-    onStart: bugsRequested.type,
-    data: bugsReceived.type,
-    onSuccess: actions.apiCallSuccess.type,
-    onFailure: actions.apiCallFailure.type
-  });
+// export const loadBugs = () =>
+//   actions.apiCallBegan({
+//     url: "https://jsonplaceholder.typicode.com/todos/",
+//     onStart: bugsRequested.type,
+//     onError: bugsFailed.type,
+//     data: bugsReceived.type,
+//     onSuccess: actions.apiCallSuccess.type,
+//     onFailure: actions.apiCallFailure.type
+//   });
 
 //Selector
 // export const getUnresolvedBugs = (state) =>
