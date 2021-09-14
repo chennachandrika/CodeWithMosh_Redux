@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
+import * as actions from "../store/api";
 
 let lastId = 0;
 
@@ -11,8 +12,12 @@ const slice = createSlice({
     lastFetch: null
   },
   reducers: {
+    bugsRequested: (bugs, action) => {
+      bugs.loading = true;
+    },
     bugsReceived: (bugs, action) => {
       bugs.list = action.payload;
+      bugs.loading = false;
     },
     bugAdded: (bugs, action) => {
       bugs.list.push({
@@ -34,8 +39,22 @@ const slice = createSlice({
   }
 });
 
-export const { bugAdded, bugRemoved, bugResolved } = slice.actions;
+export const {
+  bugAdded,
+  bugRemoved,
+  bugResolved,
+  bugsRequested,
+  bugsReceived
+} = slice.actions;
 export default slice.reducer;
+
+//actionCreator
+export const loadBugs = () =>
+  actions.apiCallBegan({
+    url: "https://jsonplaceholder.typicode.com/todos/",
+    onSuccess: actions.apiCallSuccess.type,
+    onFailure: actions.apiCallFailure.type
+  });
 
 //Selector
 // export const getUnresolvedBugs = (state) =>

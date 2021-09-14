@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { bugAdded, bugRemoved, bugResolved } from "../../store/bugs";
-import * as actions from "../../store/api";
+import { loadBugs } from "../../store/bugs";
 
 function BugsView() {
   const bugsList = useSelector((store) => store.entities.bugs.list);
@@ -9,13 +9,7 @@ function BugsView() {
   const onAddBug = (event) => {
     event.preventDefault();
     dispatch(bugAdded({ description: inputValue }));
-    dispatch(
-      actions.apiCallBegan({
-        url: "https://jsonplaceholder.typicode.com/todos/",
-        onSuccess: actions.apiCallSuccess.type,
-        onFailure: actions.apiCallFailure.type
-      })
-    );
+    dispatch(loadBugs());
   };
   const renderApp = () => {
     return (
