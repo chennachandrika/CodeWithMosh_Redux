@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { bugAdded, bugRemoved, bugResolved } from "../../store/bugs";
-import { loadBugs } from "../../store/bugs";
+import { loadBugs, addBug } from "../../store/bugs";
 
 function BugsView() {
   const bugsList = useSelector((store) => store.entities.bugs.list);
@@ -11,9 +11,7 @@ function BugsView() {
     event.preventDefault();
     dispatch(bugAdded({ title: inputValue }));
     dispatch(loadBugs());
-    setTimeout(() => {
-      dispatch(loadBugs());
-    }, 5000);
+    // dispatch(addBug({ title: inputValue }));
   };
   const renderApp = () => {
     return (

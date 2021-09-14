@@ -17,7 +17,7 @@ const slice = createSlice({
       bugs.loading = true;
     },
     bugsReceived: (bugs, action) => {
-      bugs.list = action.payload.data;
+      bugs.list = action.payload;
       bugs.loading = false;
       bugs.lastFetch = Date.now();
     },
@@ -65,12 +65,21 @@ export const loadBugs = () => (dispatch, getState) => {
       url: "https://jsonplaceholder.typicode.com/todos/",
       onStart: bugsRequested.type,
       onError: bugsFailed.type,
-      data: bugsReceived.type,
+      dataType: bugsReceived.type,
       onSuccess: actions.apiCallSuccess.type,
       onFailure: actions.apiCallFailure.type
     })
   );
 };
+
+//save data to server
+export const addBug = (bug) =>
+  actions.apiCallBegan({
+    url: "https://jsonplaceholder.typicode.com/todos/",
+    method: "post",
+    data: bug,
+    onSuccess: bugAdded.type
+  });
 
 //actionCreator
 // export const loadBugs = () =>
